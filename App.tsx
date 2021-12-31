@@ -1,5 +1,7 @@
-import React from 'react';
+import axios from 'axios';
+import React, {useState} from 'react';
 import {
+  Button,
   SafeAreaView,
   ScrollView,
   StatusBar,
@@ -10,13 +12,21 @@ import {
 } from 'react-native';
 
 import {Colors, Header} from 'react-native/Libraries/NewAppScreen';
-import Section from './src/components/Section';
+import Section from './src/client/components/Section';
 
 const App = () => {
+  const [num, setNum] = useState(0);
+  const [text, setText] = useState<Array<string>>([]);
   const isDarkMode = useColorScheme() === 'dark';
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+  };
+
+  const handlePress = async () => {
+    const res = await axios.get('http://localhost:5000');
+    setText(prev => [...prev, res.data]);
+    setNum(prev => prev + 1);
   };
 
   return (
@@ -35,6 +45,17 @@ const App = () => {
             React-Native project.
           </Section>
           <Section title="Keep going">Now do more!</Section>
+          <View>
+            <Text style={styles.topText}>You have pressed the button</Text>
+            <Text style={styles.text}>{num}</Text>
+            <Text style={styles.text}>times</Text>
+            <Button title="Press here" onPress={handlePress} />
+            {text.map((t, i) => (
+              <Text style={styles.text} key={t + i}>
+                {t}
+              </Text>
+            ))}
+          </View>
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -58,6 +79,8 @@ const styles = StyleSheet.create({
   highlight: {
     fontWeight: '700',
   },
+  text: {textAlign: 'center'},
+  topText: {textAlign: 'center', margin: 30},
 });
 
 export default App;
