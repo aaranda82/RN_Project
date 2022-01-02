@@ -37,14 +37,14 @@ interface SignUpFormValues extends BasicFormValues {
 }
 
 const SignUpForm = () => {
-  const handleOnSubmit = (values: SignUpFormValues) => {
-    axios.post('http://localhost:5000/signup', {
+  const handleOnSubmit = async (values: SignUpFormValues) => {
+    const res = await axios.post('http://localhost:5000/signup', {
       userName: values.userName,
       email: values.email,
       password: values.password,
       confirmPassword: values.confirmPassword,
     });
-    console.log(values);
+    console.log(res);
   };
 
   return (
