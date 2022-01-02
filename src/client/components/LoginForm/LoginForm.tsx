@@ -12,24 +12,17 @@ const LoginSchema = Yup.object().shape({
     .max(25, 'Too Long!')
     .trim()
     .required('Required'),
-  password: Yup.string()
-    // .matches(
-    //   /^(?=.*[0-9])(?=.*[!@#$%^&*])(?=.*[A-Z])[a-zA-Z0-9!@#$%^&*]{8,30}$/,
-    //   'Password must contain at least 8 characters, one uppercase, one number, and one special case character',
-    // )
-    .min(8, 'Too Short!')
-    .max(20, 'To Long!')
-    .required('No password provided.'),
+  password: Yup.string().required('No password provided.'),
 });
 
 const LoginForm = () => {
-  const handleOnSubmit = (values: BasicFormValues) => {
-    axios.post('http://localhost:5000/login', {
+  const handleOnSubmit = async (values: BasicFormValues) => {
+    const response = await axios.post('http://localhost:5000/login', {
       userName: values.userName,
       password: values.password,
     });
 
-    console.log(values);
+    console.log(response.data);
   };
 
   return (
