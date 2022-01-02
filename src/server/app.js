@@ -1,5 +1,6 @@
 const express = require('express');
 const pg = require('pg');
+const bcrypt = require('bcrypt');
 
 const pool = new pg.Pool({
   host: 'localhost',
@@ -15,7 +16,6 @@ app.use(express.json());
 app.get('/', async (req, res) => {
   try {
     const response = await pool.query('select * from users');
-    console.log(response);
     res.send(response.rows);
   } catch (error) {
     console.log(error);
@@ -25,36 +25,55 @@ app.get('/', async (req, res) => {
 app.post('/signup', async (req, res) => {
   try {
     const {email, userName, password} = req.body;
-    const headers = {
-      status: 200,
-      send: '',
-    };
-
     const response = await pool.query('SELECT * FROM users WHERE email=$1', [
       email.toLowerCase(),
     ]);
 
     if (response.rows.length) {
-      headers.send = 'Duplicate account';
+      res.send('Duplicate account');
     } else {
-      const insertResponse = await pool.query(
-        'INSERT INTO users (id, user_name, email, password) VALUES(DEFAULT, $1, $2, $3) RETURNING id',
-        [userName, email.toLowerCase(), password],
-      );
-      headers.send = insertResponse.rows.length
-        ? 'Account created successfully'
-        : 'Something went wrong';
+      await bcrypt.hash(password, 10, async function (err, hash) {
+        if (err) {
+          console.log(err);
+        }
+        // Store hash in your password DB.
+        const insertResponse = await pool.query(
+          'INSERT INTO users (id, user_name, email, password) VALUES(DEFAULT, $1, $2, $3) RETURNING id',
+          [userName, email.toLowerCase(), hash],
+        );
+        if (insertResponse.rows.length) {
+          res.send('Account created successfully');
+        } else {
+          res.send('Something went wrong');
+        }
+      });
     }
-
-    res.status(headers.status).send(headers.send);
   } catch (error) {
     console.log(error);
   }
 });
 
-app.post('/login', (req, res) => {
-  console.log(req.body);
-  res.send('Log in sent');
+app.post('/login', async (req, res) => {
+  const fetchStoredPW = await pool.query(
+    'SELECT password FROM users WHERE user_name = $1;',
+    [req.body.userName],
+  );
+
+  if (!fetchStoredPW.rows.length) {
+    res.status(400).send('User name not in DB');
+  } else {
+    await bcrypt.compare(
+      req.body.password,
+      fetchStoredPW.rows[0].password,
+      function (err, result) {
+        // result == true
+        if (err) {
+          res.status(500).send('Something happened checking the password');
+        }
+        res.send({authenticated: result});
+      },
+    );
+  }
 });
 
 app.listen(port, () => {
