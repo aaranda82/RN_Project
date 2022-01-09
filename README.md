@@ -1,5 +1,7 @@
 SuperSweet React-Native Project
 
+jwt tutorial: https://www.section.io/engineering-education/how-to-build-authentication-api-with-jwt-token-in-nodejs/
+
 /\*\*
 
 - Sample React Native App
