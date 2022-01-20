@@ -3,8 +3,9 @@ import {Formik} from 'formik';
 import React from 'react';
 import {Button, StyleSheet, TextInput, View} from 'react-native';
 import * as Yup from 'yup';
+import {baseUrl} from '../../../constants';
 import Error from './Error';
-import {BasicFormValues} from './SignUpForm';
+import {BasicFormValues} from './RegisterForm';
 
 const LoginSchema = Yup.object().shape({
   userName: Yup.string()
@@ -17,11 +18,11 @@ const LoginSchema = Yup.object().shape({
 
 const LoginForm = () => {
   const handleOnSubmit = async (values: BasicFormValues) => {
-    const response = await axios.post('http://localhost:5000/login', {
+    const response = await axios.post(`${baseUrl}/auth/login`, {
       userName: values.userName,
       password: values.password,
     });
-
+    // res.data.token
     console.log(response.data);
   };
 

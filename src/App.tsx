@@ -12,7 +12,7 @@ import {
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 import LoginForm from './client/components/LoginForm/LoginForm';
 import ModeSelect, {ModeTypes} from './client/components/LoginForm/ModeSelect';
-import SignUpForm from './client/components/LoginForm/SignUpForm';
+import RegisterForm from './client/components/LoginForm/RegisterForm';
 
 const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
@@ -40,7 +40,7 @@ const App = () => {
             to view all the <Text style={styles.highlight}>super sweet</Text>{' '}
             content
           </Text>
-          {mode === 'login' ? <LoginForm /> : <SignUpForm />}
+          {mode === 'login' ? <LoginForm /> : <RegisterForm />}
           <ModeSelect mode={mode} setMode={setMode} />
         </View>
       </ScrollView>
