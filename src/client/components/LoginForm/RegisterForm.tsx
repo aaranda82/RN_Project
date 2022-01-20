@@ -4,6 +4,7 @@ import {Button, StyleSheet, TextInput, View} from 'react-native';
 import Error from './Error';
 import * as Yup from 'yup';
 import axios from 'axios';
+import {baseUrl} from '../../../constants';
 
 const SignUpSchema = Yup.object().shape({
   userName: Yup.string()
@@ -36,14 +37,15 @@ interface SignUpFormValues extends BasicFormValues {
   email: string;
 }
 
-const SignUpForm = () => {
+const RegisterForm = () => {
   const handleOnSubmit = async (values: SignUpFormValues) => {
-    const res = await axios.post('http://localhost:5000/signup', {
+    const res = await axios.post(`${baseUrl}/auth/register`, {
       userName: values.userName,
       email: values.email,
       password: values.password,
       confirmPassword: values.confirmPassword,
     });
+    // res.data.token
     console.log(res);
   };
 
@@ -121,4 +123,4 @@ const styles = StyleSheet.create({
   input: {textAlign: 'center', padding: 20},
 });
 
-export default SignUpForm;
+export default RegisterForm;

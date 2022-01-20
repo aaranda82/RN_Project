@@ -1,5 +1,6 @@
 import jwt, {JwtPayload} from 'jsonwebtoken';
 import {Request, Response, NextFunction} from 'express';
+require('dotenv').config();
 
 interface VerifyTokenRequestProps extends Request {
   user?: string | JwtPayload;

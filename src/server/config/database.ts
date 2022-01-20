@@ -1,4 +1,5 @@
 import pg from 'pg';
+require('dotenv').config();
 
 const pool = new pg.Pool({
   host: 'localhost',
