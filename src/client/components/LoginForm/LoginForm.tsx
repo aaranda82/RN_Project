@@ -4,6 +4,7 @@ import React from 'react';
 import {Button, StyleSheet, TextInput, View} from 'react-native';
 import * as Yup from 'yup';
 import {baseUrl} from '../../../constants';
+import {getData, storeData} from '../../../services/asyncStorage';
 import Error from './Error';
 import {BasicFormValues} from './RegisterForm';
 
@@ -23,6 +24,8 @@ const LoginForm = () => {
       password: values.password,
     });
     // res.data.token
+    await storeData(response.data.token);
+    await getData();
     console.log(response.data);
   };
 
