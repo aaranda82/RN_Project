@@ -36,7 +36,11 @@ router.use('/', async (req, res) => {
             expiresIn: '2h',
           },
         );
-        res.send({token, authenticated: result});
+        return res.send({
+          token,
+          authenticated: result,
+          userId: fetchStoredPW.rows[0].id,
+        });
       });
     }
   } catch (err) {
