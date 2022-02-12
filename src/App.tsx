@@ -8,6 +8,7 @@ import {
   useColorScheme,
   View,
 } from 'react-native';
+import {NavigationContainer} from '@react-navigation/native';
 
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 import LoginForm from './client/components/LoginForm/LoginForm';
@@ -23,28 +24,30 @@ const App = () => {
   };
 
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Text style={[styles.sectionTitle, styles.topText]}>
-            Super Sweet Mobile App
-          </Text>
-          <Text style={styles.subTitle}>Create an account and log in</Text>
-          <Text style={styles.subTitle}>
-            to view all the <Text style={styles.highlight}>super sweet</Text>{' '}
-            content
-          </Text>
-          {mode === 'login' ? <LoginForm /> : <RegisterForm />}
-          <ModeSelect mode={mode} setMode={setMode} />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+    <NavigationContainer>
+      <SafeAreaView style={backgroundStyle}>
+        <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+        <ScrollView
+          contentInsetAdjustmentBehavior="automatic"
+          style={backgroundStyle}>
+          <View
+            style={{
+              backgroundColor: isDarkMode ? Colors.black : Colors.white,
+            }}>
+            <Text style={[styles.sectionTitle, styles.topText]}>
+              Super Sweet Mobile App
+            </Text>
+            <Text style={styles.subTitle}>Create an account and log in</Text>
+            <Text style={styles.subTitle}>
+              to view all the <Text style={styles.highlight}>super sweet</Text>{' '}
+              content
+            </Text>
+            {mode === 'login' ? <LoginForm /> : <RegisterForm />}
+            <ModeSelect mode={mode} setMode={setMode} />
+          </View>
+        </ScrollView>
+      </SafeAreaView>
+    </NavigationContainer>
   );
 };
 
