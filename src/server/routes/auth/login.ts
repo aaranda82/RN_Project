@@ -1,7 +1,7 @@
 import {compare} from 'bcrypt';
 import {Router} from 'express';
-import {sign} from 'jsonwebtoken';
-import {knex} from '../../config/knex';
+import {signJWT} from '../../../services/jwt';
+import {fetchUserByUserName} from '../../../services/queries';
 require('dotenv').config();
 
 const router = Router();
@@ -13,10 +13,7 @@ router.use('/', async (req, res) => {
       return res.status(400).send('Missing Input');
     }
 
-    const fetchedPW = await knex
-      .select()
-      .from('users')
-      .where('user_name', userName.toLowerCase());
+    const fetchedPW = await fetchUserByUserName(userName);
 
     if (!fetchedPW.length) {
       return res.status(400).send('User name not in DB');
@@ -25,17 +22,11 @@ router.use('/', async (req, res) => {
         if (err) {
           return res.send('Something happened checking the password');
         }
-        const token = sign(
-          {
-            user_id: fetchedPW[0].id,
-            email: fetchedPW[0].email,
-            userName: fetchedPW[0].userName,
-          },
-          process.env.TOKEN_KEY || '',
-          {
-            expiresIn: '2h',
-          },
-        );
+        const token = signJWT({
+          user_id: fetchedPW[0].id,
+          email: fetchedPW[0].email,
+          userName: fetchedPW[0].userName,
+        });
         return res.send({
           token,
           authenticated: result,
