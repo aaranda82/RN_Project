@@ -68,6 +68,7 @@ const LoginForm = () => {
               onBlur={handleBlur('password')}
               value={values.password}
               placeholder="PASSWORD"
+              secureTextEntry={true}
               style={styles.input}
             />
             {touched.password && errors.password ? (

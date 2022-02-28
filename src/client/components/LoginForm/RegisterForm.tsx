@@ -95,6 +95,7 @@ const RegisterForm = () => {
               onBlur={handleBlur('password')}
               value={values.password}
               placeholder="PASSWORD"
+              secureTextEntry={true}
               style={styles.input}
             />
             {touched.password && errors.password ? (
@@ -105,6 +106,7 @@ const RegisterForm = () => {
               onBlur={handleBlur('confirmPassword')}
               value={values.confirmPassword}
               placeholder="PASSWORD"
+              secureTextEntry={true}
               style={styles.input}
             />
             {touched.confirmPassword && errors.confirmPassword ? (
