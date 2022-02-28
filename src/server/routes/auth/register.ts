@@ -1,7 +1,10 @@
 import {hash} from 'bcrypt';
 import {Router} from 'express';
-import {sign} from 'jsonwebtoken';
-import {knex} from '../../config/knex';
+import {signJWT} from '../../../services/jwt';
+import {
+  getUsersByUserNameAndEmail,
+  insertUser,
+} from '../../../services/queries';
 require('dotenv').config();
 
 const router = Router();
@@ -15,11 +18,7 @@ router.use('/', async (req, res) => {
         .send({email, userName, password, status: 'Missing input'});
     }
 
-    const existingUser = await knex
-      .select('email', 'user_name')
-      .from('users')
-      .where('email', email.toLowerCase())
-      .orWhere('user_name', userName.toLowerCase());
+    const existingUser = await getUsersByUserNameAndEmail({email, userName});
 
     if (existingUser[0]?.user_name === userName.toLowerCase()) {
       return res.send('User name taken');
@@ -30,24 +29,18 @@ router.use('/', async (req, res) => {
         if (err) {
           console.log(err);
         }
-        // Store hashedPassword in your password DB.
-        const user = await knex('users').insert(
-          {
-            user_name: userName.toLowerCase(),
-            email: email.toLowerCase(),
-            password: hashedPassword,
-          },
-          ['id', 'email'],
-        );
+        const user = await insertUser({
+          userName,
+          email,
+          password: hashedPassword,
+        });
 
         if (user.length) {
-          const token = sign(
-            {user_id: user[0].id, email: user[0].email},
-            process.env.TOKEN_KEY || '',
-            {
-              expiresIn: '2h',
-            },
-          );
+          const token = signJWT({
+            user_id: user[0].id,
+            email: user[0].email,
+            userName: user[0].user_name,
+          });
           return res
             .status(201)
             .send({token, status: 'Account created successfully'});
