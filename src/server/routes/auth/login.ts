@@ -10,22 +10,23 @@ router.use('/', async (req, res) => {
   try {
     const {userName, password} = req.body;
     if (!userName || !password) {
-      return res.status(400).send('Missing Input');
+      return res.status(400).send({error: 'Missing Input'});
     }
 
     const fetchedPW = await fetchUserByUserName(userName);
 
     if (!fetchedPW.length) {
-      return res.status(400).send('User name not in DB');
+      return res.status(400).send({error: 'User name not in DB'});
     } else {
       compare(password, fetchedPW[0].password, function (err, result) {
         if (err) {
-          return res.send('Something happened checking the password');
+          return res.send({error: 'Something happened checking the password'});
         }
         const token = signJWT({
           user_id: fetchedPW[0].id,
           email: fetchedPW[0].email,
           userName: fetchedPW[0].userName,
+          expiresIn: '2h',
         });
         return res.send({
           token,
@@ -34,9 +35,9 @@ router.use('/', async (req, res) => {
         });
       });
     }
-  } catch (err) {
-    console.log(err);
-    res.send('Something Unexpected Happend');
+  } catch (error) {
+    console.log(error);
+    res.send({error});
   }
 });
 
