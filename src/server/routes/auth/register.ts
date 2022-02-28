@@ -21,13 +21,13 @@ router.use('/', async (req, res) => {
     const existingUser = await getUsersByUserNameAndEmail({email, userName});
 
     if (existingUser[0]?.user_name === userName.toLowerCase()) {
-      return res.send('User name taken');
+      return res.send({error: 'User name taken'});
     } else if (existingUser[0]?.email === email.toLowerCase()) {
-      return res.send('Eror creating account');
+      return res.send({error: 'Eror creating account'});
     } else {
-      hash(password, 10, async function (err, hashedPassword) {
-        if (err) {
-          console.log(err);
+      hash(password, 10, async (error, hashedPassword) => {
+        if (error) {
+          console.log({error});
         }
         const user = await insertUser({
           userName,
@@ -40,17 +40,18 @@ router.use('/', async (req, res) => {
             user_id: user[0].id,
             email: user[0].email,
             userName: user[0].user_name,
+            expiresIn: '2h',
           });
           return res
             .status(201)
             .send({token, status: 'Account created successfully'});
         } else {
-          return res.status(400).send('Something went wrong');
+          return res.status(400).send({error: 'Something went wrong'});
         }
       });
     }
   } catch (error) {
-    console.log(error);
+    console.log({error});
   }
 });
 
