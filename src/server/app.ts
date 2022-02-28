@@ -19,7 +19,7 @@ app.get('/', verifyToken, async (req, res) => {
 app.use('/auth', auth);
 
 app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`);
+  console.log(`*** App listening at http://localhost:${port}`);
 });
 
 export default app;

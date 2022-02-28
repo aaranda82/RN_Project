@@ -1,7 +1,7 @@
 import {hash} from 'bcrypt';
 import {Router} from 'express';
 import {sign} from 'jsonwebtoken';
-import pool from '../../config/database';
+import {knex} from '../../config/knex';
 require('dotenv').config();
 
 const router = Router();
@@ -14,28 +14,35 @@ router.use('/', async (req, res) => {
         .status(400)
         .send({email, userName, password, status: 'Missing input'});
     }
-    const existingUser = await pool.query(
-      'SELECT email, user_name FROM users WHERE email=$1 OR user_name=$2',
-      [email.toLowerCase(), userName.toLowerCase()],
-    );
 
-    if (existingUser.rows[0].user_name === userName.toLowerCase()) {
+    const existingUser = await knex
+      .select('email', 'user_name')
+      .from('users')
+      .where('email', email.toLowerCase())
+      .orWhere('user_name', userName.toLowerCase());
+
+    if (existingUser[0]?.user_name === userName.toLowerCase()) {
       return res.send('User name taken');
-    } else if (existingUser.rows[0].email === email.toLowerCase()) {
-      return res.send('Cannot create account at this time');
+    } else if (existingUser[0]?.email === email.toLowerCase()) {
+      return res.send('Eror creating account');
     } else {
       hash(password, 10, async function (err, hashedPassword) {
         if (err) {
           console.log(err);
         }
         // Store hashedPassword in your password DB.
-        const user = await pool.query(
-          'INSERT INTO users (id, user_name, email, password) VALUES(DEFAULT, $1, $2, $3) RETURNING id, email',
-          [userName.toLowerCase(), email.toLowerCase(), hashedPassword],
+        const user = await knex('users').insert(
+          {
+            user_name: userName.toLowerCase(),
+            email: email.toLowerCase(),
+            password: hashedPassword,
+          },
+          ['id', 'email'],
         );
-        if (user.rows.length) {
+
+        if (user.length) {
           const token = sign(
-            {user_id: user.rows[0].id, email: user.rows[0].email},
+            {user_id: user[0].id, email: user[0].email},
             process.env.TOKEN_KEY || '',
             {
               expiresIn: '2h',
