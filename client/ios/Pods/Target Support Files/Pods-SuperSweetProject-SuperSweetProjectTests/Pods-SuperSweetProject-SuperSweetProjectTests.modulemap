@@ -1,0 +1,6 @@
+module Pods_SuperSweetProject_SuperSweetProjectTests {
+  umbrella header "Pods-SuperSweetProject-SuperSweetProjectTests-umbrella.h"
+
+  export *
+  module * { export * }
+}
