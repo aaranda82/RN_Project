@@ -1,9 +1,11 @@
 import { hash } from "bcrypt";
 import { Router } from "express";
-import { signJWT } from "../../services/jwt";
-import { getUsersByUserNameAndEmail, insertUser } from "../../services/queries";
+import JwtService from "../../services/jwt";
+import { UserServices } from "../../services/queries";
 require("dotenv").config();
 
+const userQueries = new UserServices();
+const jwt = new JwtService();
 const router = Router();
 
 router.use("/", async (req, res) => {
@@ -15,7 +17,10 @@ router.use("/", async (req, res) => {
         .send({ email, userName, password, status: "Missing input" });
     }
 
-    const existingUser = await getUsersByUserNameAndEmail({ email, userName });
+    const existingUser = await userQueries.getUserByUserNameAndEmail({
+      email,
+      userName,
+    });
 
     if (existingUser[0]?.user_name === userName.toLowerCase()) {
       return res.send({ error: "User name taken" });
@@ -26,14 +31,14 @@ router.use("/", async (req, res) => {
         if (error) {
           console.log({ error });
         }
-        const user = await insertUser({
+        const user = await userQueries.insertUser({
           userName,
           email,
           password: hashedPassword,
         });
 
         if (user.length) {
-          const token = signJWT({
+          const token = jwt.signJWT({
             user_id: user[0].id,
             email: user[0].email,
             userName: user[0].user_name,

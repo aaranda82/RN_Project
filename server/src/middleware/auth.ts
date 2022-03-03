@@ -1,8 +1,9 @@
 import { JwtPayload } from "jsonwebtoken";
 import { Request, Response, NextFunction } from "express";
-import { verifyJWT } from "../services/jwt";
+import JwtService from "../services/jwt";
 require("dotenv").config();
 
+const jwt = new JwtService();
 interface VerifyTokenRequestProps extends Request {
   user?: string | JwtPayload;
 }
@@ -20,7 +21,7 @@ const verifyToken = (
   }
 
   try {
-    const decoded = verifyJWT(token);
+    const decoded = jwt.verifyJWT(token);
     req.user = decoded;
   } catch (error) {
     return res.status(401).send({ error: "Invalid Token" });
