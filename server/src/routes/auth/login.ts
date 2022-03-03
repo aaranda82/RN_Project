@@ -1,9 +1,11 @@
 import { compare } from "bcrypt";
 import { Router } from "express";
-import { signJWT } from "../../services/jwt";
-import { fetchUserByUserName } from "../../services/queries";
+import JwtService from "../../services/jwt";
+import { UserServices } from "../../services/queries";
 require("dotenv").config();
 
+const user = new UserServices();
+const jwt = new JwtService();
 const router = Router();
 
 router.use("/", async (req, res) => {
@@ -13,7 +15,7 @@ router.use("/", async (req, res) => {
       return res.status(400).send({ error: "Missing Input" });
     }
 
-    const fetchedPW = await fetchUserByUserName(userName);
+    const fetchedPW = await user.fetchUserByUserName(userName);
 
     if (!fetchedPW.length) {
       return res.status(400).send({ error: "User name not in DB" });
@@ -24,7 +26,7 @@ router.use("/", async (req, res) => {
             error: "Something happened checking the password",
           });
         }
-        const token = signJWT({
+        const token = jwt.signJWT({
           user_id: fetchedPW[0].id,
           email: fetchedPW[0].email,
           userName: fetchedPW[0].userName,
