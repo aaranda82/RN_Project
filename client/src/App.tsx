@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -11,13 +11,29 @@ import {
 import {NavigationContainer} from '@react-navigation/native';
 
 import {Colors} from 'react-native/Libraries/NewAppScreen';
-import LoginForm from './components/LoginForm/LoginForm';
 import ModeSelect, {ModeTypes} from './components/LoginForm/ModeSelect';
-import RegisterForm from './components/LoginForm/RegisterForm';
+import Home from './components/Home/Home';
+import {getToken, removeTokens} from './services/asyncStorage';
+import {TOKEN} from './constants';
+import AuthenticationForms from './components/LoginForm';
 
 const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
   const [mode, setMode] = useState<ModeTypes>('signup');
+  const [userId, setUserId] = useState('');
+
+  useEffect(() => {
+    if (!userId) {
+      removeTokens();
+      setMode('login');
+    } else {
+      getToken(TOKEN.access).then(token => {
+        if (token) {
+          setMode('logged_in');
+        }
+      });
+    }
+  }, [userId, setMode]);
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
@@ -42,8 +58,22 @@ const App = () => {
               to view all the <Text style={styles.highlight}>super sweet</Text>{' '}
               content
             </Text>
-            {mode === 'login' ? <LoginForm /> : <RegisterForm />}
-            <ModeSelect mode={mode} setMode={setMode} />
+            {(() => {
+              switch (mode) {
+                case 'logged_in':
+                  return <Home setUserId={setUserId} />;
+                case 'login':
+                case 'signup':
+                  return (
+                    <AuthenticationForms setUserId={setUserId} mode={mode} />
+                  );
+                default:
+                  return (
+                    <AuthenticationForms setUserId={setUserId} mode={mode} />
+                  );
+              }
+            })()}
+            {!userId ? <ModeSelect mode={mode} setMode={setMode} /> : null}
           </View>
         </ScrollView>
       </SafeAreaView>
