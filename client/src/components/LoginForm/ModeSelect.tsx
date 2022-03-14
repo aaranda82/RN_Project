@@ -6,7 +6,7 @@ interface ModeSelectProps {
   setMode: (value: ModeTypes) => void;
 }
 
-export type ModeTypes = 'login' | 'signup';
+export type ModeTypes = 'login' | 'signup' | 'logged_in';
 
 const LoginModeSelect: React.FC<ModeSelectProps> = ({mode, setMode}) => {
   return (

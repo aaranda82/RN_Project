@@ -1,10 +1,10 @@
 import axios from 'axios';
 import {Formik} from 'formik';
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {Button, StyleSheet, TextInput, View} from 'react-native';
 import * as Yup from 'yup';
 import {baseUrl} from '../../constants';
-import {getToken, storeToken} from '../../services/asyncStorage';
+import {storeTokens} from '../../services/asyncStorage';
 import Error from './Error';
 import {BasicFormValues} from './RegisterForm';
 
@@ -17,25 +17,25 @@ const LoginSchema = Yup.object().shape({
   password: Yup.string().required('No password provided.'),
 });
 
-const LoginForm = () => {
-  const [userId, setUserId] = useState('');
+export type LoginFormProps = {
+  setUserId: (value: string) => void;
+};
 
-  useEffect(() => {
-    if (userId) {
-      getToken(userId).then(token => {
-        console.log(token);
-      });
-    }
-  }, [userId]);
-
+const LoginForm: React.FC<LoginFormProps> = ({setUserId}) => {
   const handleOnSubmit = async (values: BasicFormValues) => {
-    const response = await axios.post(`${baseUrl}/auth/login`, {
+    const {
+      data: {accessToken, refreshToken, userId, error},
+    } = await axios.post(`${baseUrl}/auth/login`, {
       userName: values.userName,
       password: values.password,
     });
-    // res.data.token
-    await storeToken(response.data.userId, response.data.token);
-    setUserId(response.data.userId);
+    if (error) {
+      console.log(error);
+    }
+    if (accessToken && refreshToken && userId) {
+      await storeTokens(accessToken, refreshToken);
+      setUserId(userId);
+    }
   };
 
   return (
