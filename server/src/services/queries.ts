@@ -17,6 +17,13 @@ export class UserServices {
       .orWhere("user_name", lower(userName));
   }
 
+  async getUserById(userId: string) {
+    return await knex
+      .select("user_name", "email", "id")
+      .from("users")
+      .where("id", userId);
+  }
+
   async insertUser({
     userName,
     email,

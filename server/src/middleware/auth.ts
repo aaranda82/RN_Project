@@ -13,18 +13,17 @@ const verifyToken = (
   res: Response,
   next: NextFunction
 ) => {
-  const token =
-    req.body.token || req.query.token || req.headers["x-access-token"];
+  const token = req.headers["x-access-token"] as string;
 
   if (!token) {
-    return res.status(403).send({ error: "Missing token" });
+    return res.send({ error: "Missing token" });
   }
 
   try {
     const decoded = jwt.verifyJWT(token);
     req.user = decoded;
   } catch (error) {
-    return res.status(401).send({ error: "Invalid Token" });
+    return res.send({ error: "Invalid Token" });
   }
   return next();
 };

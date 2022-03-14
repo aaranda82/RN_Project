@@ -8,9 +8,9 @@ const port = 3000;
 
 app.use(json());
 
-app.get("/", verifyToken, async (req, res) => {
+app.get("/", verifyToken, async (_, res) => {
   try {
-    res.send("You are logged in!!😀🎉");
+    res.send({ text: "Your token is valid!!😀🎉" });
   } catch (error) {
     console.log(error);
   }

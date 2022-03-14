@@ -1,4 +1,4 @@
-import jwt, { sign } from "jsonwebtoken";
+import jwt, { JwtPayload, sign } from "jsonwebtoken";
 require("dotenv").config();
 
 export type SignJWTProps = {
@@ -24,7 +24,7 @@ class JwtService {
   }
 
   verifyJWT(token: string) {
-    return jwt.verify(token, process.env.TOKEN_KEY || "");
+    return jwt.verify(token, process.env.TOKEN_KEY || "") as JwtPayload;
   }
 }
 

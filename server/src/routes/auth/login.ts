@@ -14,9 +14,7 @@ router.use("/", async (req, res) => {
     if (!userName || !password) {
       return res.status(400).send({ error: "Missing Input" });
     }
-
     const fetchedPW = await user.fetchUserByUserName(userName);
-
     if (!fetchedPW.length) {
       return res.status(400).send({ error: "User name not in DB" });
     } else {
@@ -26,14 +24,23 @@ router.use("/", async (req, res) => {
             error: "Something happened checking the password",
           });
         }
-        const token = jwt.signJWT({
+        const userInfo = {
           user_id: fetchedPW[0].id,
           email: fetchedPW[0].email,
           userName: fetchedPW[0].userName,
+        };
+        const accessToken = jwt.signJWT({
+          ...userInfo,
           expiresIn: "2h",
         });
+        const refreshToken = jwt.signJWT({
+          ...userInfo,
+          expiresIn: "60d",
+        });
+
         return res.send({
-          token,
+          accessToken,
+          refreshToken,
           authenticated: result,
           userId: fetchedPW[0].id,
         });
