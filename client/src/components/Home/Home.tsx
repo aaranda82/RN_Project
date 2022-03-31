@@ -1,66 +1,66 @@
-import axios from 'axios';
-import React, {useState} from 'react';
-import {Button, StyleSheet, Text, View} from 'react-native';
-import {baseUrl, TOKEN} from '../../constants';
-import {getToken, storeToken} from '../../services/asyncStorage';
-import {LoginFormProps} from '../LoginForm/LoginForm';
+import React from 'react';
+import {
+  Button,
+  ScrollView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  useColorScheme,
+  View,
+} from 'react-native';
+import {Colors} from 'react-native/Libraries/NewAppScreen';
+import {HomeProps} from '../../Types';
 
-const Home: React.FC<LoginFormProps> = ({setUserId}) => {
-  const [displayText, setDisplayText] = useState('');
-  const handleTestCall = async () => {
-    const accessToken = await getToken(TOKEN.access);
-    const {
-      data: {text, error},
-    } = await axios.get(`${baseUrl}/`, {
-      headers: {
-        'x-access-token': accessToken || '',
-      },
-    });
-    if (error) {
-      setDisplayText(error);
-      if (error === 'Invalid Token') {
-        const refreshToken = await getToken(TOKEN.refresh);
-        const res = await axios.get(`${baseUrl}/auth/refresh`, {
-          headers: {'x-access-token': refreshToken || ''},
-        });
-        if (res.data.error) {
-          setUserId('');
-        } else {
-          storeToken(res.data.token);
-        }
-      }
-    }
-    if (text) {
-      setDisplayText(text);
-    }
+const Home: React.FC<HomeProps> = ({navigation}) => {
+  const isDarkMode = useColorScheme() === 'dark';
+
+  const backgroundStyle = {
+    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   };
   return (
-    <View style={styles.container}>
-      <Text style={styles.text}>You have logged in</Text>
-      <Text style={styles.text}>{displayText}</Text>
-      <Button onPress={handleTestCall} title="Am I logged in?" />
-      <Button
-        onPress={() => {
-          setUserId('');
-        }}
-        title="Log out"
-      />
-    </View>
+    <>
+      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+      <ScrollView
+        contentInsetAdjustmentBehavior="automatic"
+        style={backgroundStyle}>
+        <View
+          style={{
+            backgroundColor: isDarkMode ? Colors.black : Colors.white,
+          }}>
+          <Text style={[styles.sectionTitle, styles.topText]}>
+            Super Sweet Mobile App
+          </Text>
+          <Text style={styles.subTitle}>Create an account and log in</Text>
+          <Text style={styles.subTitle}>
+            to view all the <Text style={styles.highlight}>super sweet</Text>{' '}
+            content
+          </Text>
+          <Button
+            title="Login"
+            onPress={() => {
+              navigation.navigate('Login');
+            }}
+          />
+          <Button
+            title="Sign up"
+            onPress={() => {
+              navigation.navigate('Register');
+            }}
+          />
+        </View>
+      </ScrollView>
+    </>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    display: 'flex',
-    flex: 1,
-    justifyContent: 'center',
+  sectionTitle: {
+    fontSize: 24,
+    fontWeight: '600',
   },
-  text: {
-    textAlign: 'center',
-    marginTop: 40,
-    marginBottom: 40,
-    fontSize: 40,
-  },
+  topText: {textAlign: 'center', margin: 30},
+  subTitle: {textAlign: 'center', fontSize: 16, color: '#566573'},
+  highlight: {fontWeight: '600'},
 });
 
 export default Home;

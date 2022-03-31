@@ -5,8 +5,9 @@ import Error from './Error';
 import * as Yup from 'yup';
 import axios from 'axios';
 import {baseUrl} from '../../constants';
-import {LoginFormProps} from './LoginForm';
 import {storeTokens} from '../../services/asyncStorage';
+import {useStoreActions} from '../../store';
+import {RegisterFormProps} from '../../Types';
 
 const SignUpSchema = Yup.object().shape({
   userName: Yup.string()
@@ -39,7 +40,8 @@ interface SignUpFormValues extends BasicFormValues {
   email: string;
 }
 
-const RegisterForm: React.FC<LoginFormProps> = ({setUserId}) => {
+const RegisterForm: React.FC<RegisterFormProps> = ({navigation}) => {
+  const setUserId = useStoreActions(s => s.setUserId);
   const handleOnSubmit = async (values: SignUpFormValues) => {
     const res = await axios.post(`${baseUrl}/auth/register`, {
       userName: values.userName,
@@ -47,10 +49,9 @@ const RegisterForm: React.FC<LoginFormProps> = ({setUserId}) => {
       password: values.password,
       confirmPassword: values.confirmPassword,
     });
-    // res.data.token
-    console.log(res);
     await storeTokens(res.data.accessToken, res.data.refreshToken);
     setUserId(res.data.userId);
+    navigation.navigate('Overview');
   };
 
   return (

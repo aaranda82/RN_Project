@@ -2,7 +2,7 @@
   "name": "super-sweet-server",
   "version": "1.0.0",
   "scripts": {
-    "dev:server": "nodemon app.ts",
+    "start:server": "nodemon app.ts",
     "test": "jest"
   },
   "dependencies": {

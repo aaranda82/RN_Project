@@ -5,6 +5,8 @@ import {Button, StyleSheet, TextInput, View} from 'react-native';
 import * as Yup from 'yup';
 import {baseUrl} from '../../constants';
 import {storeTokens} from '../../services/asyncStorage';
+import {useStoreActions} from '../../store';
+import {LoginFormProps} from '../../Types';
 import Error from './Error';
 import {BasicFormValues} from './RegisterForm';
 
@@ -17,11 +19,8 @@ const LoginSchema = Yup.object().shape({
   password: Yup.string().required('No password provided.'),
 });
 
-export type LoginFormProps = {
-  setUserId: (value: string) => void;
-};
-
-const LoginForm: React.FC<LoginFormProps> = ({setUserId}) => {
+const LoginForm: React.FC<LoginFormProps> = ({navigation}) => {
+  const setUserId = useStoreActions(s => s.setUserId);
   const handleOnSubmit = async (values: BasicFormValues) => {
     const {
       data: {accessToken, refreshToken, userId, error},
@@ -35,6 +34,7 @@ const LoginForm: React.FC<LoginFormProps> = ({setUserId}) => {
     if (accessToken && refreshToken && userId) {
       await storeTokens(accessToken, refreshToken);
       setUserId(userId);
+      navigation.navigate('Overview');
     }
   };
 
