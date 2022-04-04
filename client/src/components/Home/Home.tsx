@@ -8,10 +8,10 @@ import {
   useColorScheme,
   View,
 } from 'react-native';
-import {Colors} from 'react-native/Libraries/NewAppScreen';
-import {HomeProps} from '../../Types';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
+import { HomeProps } from '../../Types';
 
-const Home: React.FC<HomeProps> = ({navigation}) => {
+const Home: React.FC<HomeProps> = ({ navigation }) => {
   const isDarkMode = useColorScheme() === 'dark';
 
   const backgroundStyle = {
@@ -22,11 +22,13 @@ const Home: React.FC<HomeProps> = ({navigation}) => {
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
+        style={backgroundStyle}
+      >
         <View
           style={{
             backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
+          }}
+        >
           <Text style={[styles.sectionTitle, styles.topText]}>
             Super Sweet Mobile App
           </Text>
@@ -58,9 +60,9 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: '600',
   },
-  topText: {textAlign: 'center', margin: 30},
-  subTitle: {textAlign: 'center', fontSize: 16, color: '#566573'},
-  highlight: {fontWeight: '600'},
+  topText: { textAlign: 'center', margin: 30 },
+  subTitle: { textAlign: 'center', fontSize: 16, color: '#566573' },
+  highlight: { fontWeight: '600' },
 });
 
 export default Home;
