@@ -1,11 +1,11 @@
-import jwt, { JwtPayload, sign } from "jsonwebtoken";
-require("dotenv").config();
+import jwt, { JwtPayload, sign } from 'jsonwebtoken';
+require('dotenv').config();
 
 export type SignJWTProps = {
   user_id: string;
   email: string;
   userName: string;
-  expiresIn: "2h" | "60d";
+  expiresIn: '2h' | '60d';
 };
 
 class JwtService {
@@ -16,15 +16,15 @@ class JwtService {
         email,
         userName,
       },
-      process.env.TOKEN_KEY || "",
+      process.env.TOKEN_KEY || '',
       {
         expiresIn,
-      }
+      },
     );
   }
 
   verifyJWT(token: string) {
-    return jwt.verify(token, process.env.TOKEN_KEY || "") as JwtPayload;
+    return jwt.verify(token, process.env.TOKEN_KEY || '') as JwtPayload;
   }
 }
 

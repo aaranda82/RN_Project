@@ -1,20 +1,20 @@
-import { hash } from "bcrypt";
-import { Router } from "express";
-import JwtService from "../../services/jwt";
-import { UserServices } from "../../services/queries";
-require("dotenv").config();
+import { hash } from 'bcrypt';
+import { Router } from 'express';
+import JwtService from '../../services/jwt';
+import { UserServices } from '../../services/queries';
+require('dotenv').config();
 
 const userQueries = new UserServices();
 const jwt = new JwtService();
 const router = Router();
 
-router.use("/", async (req, res) => {
+router.use('/', async (req, res) => {
   try {
     const { email, userName, password } = req.body;
     if (!email || !userName || !password) {
       return res
         .status(400)
-        .send({ email, userName, password, status: "Missing input" });
+        .send({ email, userName, password, status: 'Missing input' });
     }
 
     const existingUser = await userQueries.getUserByUserNameAndEmail({
@@ -23,9 +23,9 @@ router.use("/", async (req, res) => {
     });
 
     if (existingUser[0]?.user_name === userName.toLowerCase()) {
-      return res.send({ error: "User name taken" });
+      return res.send({ error: 'User name taken' });
     } else if (existingUser[0]?.email === email.toLowerCase()) {
-      return res.send({ error: "Eror creating account" });
+      return res.send({ error: 'Eror creating account' });
     } else {
       hash(password, 10, async (error, hashedPassword) => {
         if (error) {
@@ -42,13 +42,13 @@ router.use("/", async (req, res) => {
             user_id: user[0].id,
             email: user[0].email,
             userName: user[0].user_name,
-            expiresIn: "2h",
+            expiresIn: '2h',
           });
           return res
             .status(201)
-            .send({ token, status: "Account created successfully" });
+            .send({ token, status: 'Account created successfully' });
         } else {
-          return res.status(400).send({ error: "Something went wrong" });
+          return res.status(400).send({ error: 'Something went wrong' });
         }
       });
     }
