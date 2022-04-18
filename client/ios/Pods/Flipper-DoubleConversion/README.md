@@ -11,9 +11,7 @@ There is extensive documentation in `double-conversion/string-to-double.h` and
 `double-conversion/double-to-string.h`. Other examples can be found in
 `test/cctest/test-conversions.cc`.
 
-
-Building
-========
+# Building
 
 This library can be built with [scons][0] or [cmake][1].
 The checked-in Makefile simply forwards to scons, and provides a
@@ -22,8 +20,7 @@ shortcut to run all tests:
     make
     make test
 
-Scons
------
+## Scons
 
 The easiest way to install this library is to use `scons`. It builds
 the static and shared library, and is set up to install those at the
@@ -35,8 +32,7 @@ Use the `DESTDIR` option to change the target directory:
 
     scons DESTDIR=alternative_directory install
 
-Cmake
------
+## Cmake
 
 To use cmake run `cmake .` in the root directory. This overwrites the
 existing Makefile.

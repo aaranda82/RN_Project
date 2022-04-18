@@ -1,14 +1,14 @@
 import axios from 'axios';
-import {Formik} from 'formik';
+import { Formik } from 'formik';
 import React from 'react';
-import {Button, StyleSheet, TextInput, View} from 'react-native';
+import { Button, StyleSheet, TextInput, View } from 'react-native';
 import * as Yup from 'yup';
-import {baseUrl} from '../../constants';
-import {storeTokens} from '../../services/asyncStorage';
-import {useStoreActions} from '../../store';
-import {LoginFormProps} from '../../Types';
+import { baseUrl } from '../../constants';
+import { storeTokens } from '../../services/asyncStorage';
+import { useStoreActions } from '../../store';
+import { LoginFormProps } from '../../Types';
 import Error from './Error';
-import {BasicFormValues} from './RegisterForm';
+import { BasicFormValues } from './RegisterForm';
 
 const LoginSchema = Yup.object().shape({
   userName: Yup.string()
@@ -19,11 +19,11 @@ const LoginSchema = Yup.object().shape({
   password: Yup.string().required('No password provided.'),
 });
 
-const LoginForm: React.FC<LoginFormProps> = ({navigation}) => {
-  const setUserId = useStoreActions(s => s.setUserId);
+const LoginForm: React.FC<LoginFormProps> = ({ navigation }) => {
+  const setUserId = useStoreActions((s) => s.setUserId);
   const handleOnSubmit = async (values: BasicFormValues) => {
     const {
-      data: {accessToken, refreshToken, userId, error},
+      data: { accessToken, refreshToken, userId, error },
     } = await axios.post(`${baseUrl}/auth/login`, {
       userName: values.userName,
       password: values.password,
@@ -41,9 +41,10 @@ const LoginForm: React.FC<LoginFormProps> = ({navigation}) => {
   return (
     <View>
       <Formik
-        initialValues={{userName: '', password: ''}}
+        initialValues={{ userName: '', password: '' }}
         validationSchema={LoginSchema}
-        onSubmit={handleOnSubmit}>
+        onSubmit={handleOnSubmit}
+      >
         {({
           handleChange,
           handleBlur,
@@ -84,7 +85,7 @@ const LoginForm: React.FC<LoginFormProps> = ({navigation}) => {
 };
 
 const styles = StyleSheet.create({
-  input: {textAlign: 'center', padding: 20},
+  input: { textAlign: 'center', padding: 20 },
 });
 
 export default LoginForm;

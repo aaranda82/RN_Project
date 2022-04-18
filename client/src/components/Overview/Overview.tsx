@@ -1,18 +1,18 @@
 import axios from 'axios';
-import React, {useState} from 'react';
-import {Button, StyleSheet, Text, View} from 'react-native';
-import {baseUrl, TOKEN} from '../../constants';
-import {getToken, storeToken} from '../../services/asyncStorage';
-import {useStoreActions} from '../../store';
-import {OverviewProps} from '../../Types';
+import React, { useState } from 'react';
+import { Button, StyleSheet, Text, View } from 'react-native';
+import { baseUrl, TOKEN } from '../../constants';
+import { getToken, storeToken } from '../../services/asyncStorage';
+import { useStoreActions } from '../../store';
+import { OverviewProps } from '../../Types';
 
-const OverView: React.FC<OverviewProps> = ({navigation}) => {
-  const setUserId = useStoreActions(s => s.setUserId);
+const OverView: React.FC<OverviewProps> = ({ navigation }) => {
+  const setUserId = useStoreActions((s) => s.setUserId);
   const [displayText, setDisplayText] = useState('');
   const handleTestCall = async () => {
     const accessToken = await getToken(TOKEN.access);
     const {
-      data: {text, error},
+      data: { text, error },
     } = await axios.get(`${baseUrl}/`, {
       headers: {
         'x-access-token': accessToken || '',
@@ -23,7 +23,7 @@ const OverView: React.FC<OverviewProps> = ({navigation}) => {
       if (error === 'Invalid Token') {
         const refreshToken = await getToken(TOKEN.refresh);
         const res = await axios.get(`${baseUrl}/auth/refresh`, {
-          headers: {'x-access-token': refreshToken || ''},
+          headers: { 'x-access-token': refreshToken || '' },
         });
         if (res.data.error) {
           setUserId('');

@@ -1,13 +1,13 @@
-import {Formik} from 'formik';
+import { Formik } from 'formik';
 import React from 'react';
-import {Button, StyleSheet, TextInput, View} from 'react-native';
+import { Button, StyleSheet, TextInput, View } from 'react-native';
 import Error from './Error';
 import * as Yup from 'yup';
 import axios from 'axios';
-import {baseUrl} from '../../constants';
-import {storeTokens} from '../../services/asyncStorage';
-import {useStoreActions} from '../../store';
-import {RegisterFormProps} from '../../Types';
+import { baseUrl } from '../../constants';
+import { storeTokens } from '../../services/asyncStorage';
+import { useStoreActions } from '../../store';
+import { RegisterFormProps } from '../../Types';
 
 const SignUpSchema = Yup.object().shape({
   userName: Yup.string()
@@ -40,8 +40,8 @@ interface SignUpFormValues extends BasicFormValues {
   email: string;
 }
 
-const RegisterForm: React.FC<RegisterFormProps> = ({navigation}) => {
-  const setUserId = useStoreActions(s => s.setUserId);
+const RegisterForm: React.FC<RegisterFormProps> = ({ navigation }) => {
+  const setUserId = useStoreActions((s) => s.setUserId);
   const handleOnSubmit = async (values: SignUpFormValues) => {
     const res = await axios.post(`${baseUrl}/auth/register`, {
       userName: values.userName,
@@ -65,7 +65,8 @@ const RegisterForm: React.FC<RegisterFormProps> = ({navigation}) => {
         }}
         validationSchema={SignUpSchema}
         validateOnBlur
-        onSubmit={handleOnSubmit}>
+        onSubmit={handleOnSubmit}
+      >
         {({
           handleChange,
           handleBlur,
@@ -127,7 +128,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({navigation}) => {
 
 const styles = StyleSheet.create({
   login: {},
-  input: {textAlign: 'center', padding: 20},
+  input: { textAlign: 'center', padding: 20 },
 });
 
 export default RegisterForm;

@@ -1,4 +1,4 @@
-import {Action, action, createStore, createTypedHooks} from 'easy-peasy';
+import { Action, action, createStore, createTypedHooks } from 'easy-peasy';
 
 export interface StoreModel {
   userId: string;
@@ -11,7 +11,7 @@ export const store = createStore<StoreModel>({
   setUserId: action((state, payload) => {
     state.userId = payload;
   }),
-  clearUserId: action(state => {
+  clearUserId: action((state) => {
     state.userId = '';
   }),
 });

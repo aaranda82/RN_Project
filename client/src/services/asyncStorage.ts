@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {TOKEN} from '../constants';
+import { TOKEN } from '../constants';
 
 export type TokenTypes = 'ACCESS_TOKEN' | 'REFRESH_TOKEN';
 

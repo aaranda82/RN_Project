@@ -1,14 +1,14 @@
 import React from 'react';
-import {NavigationContainer} from '@react-navigation/native';
+import { NavigationContainer } from '@react-navigation/native';
 
 import Home from './components/Home/Home';
 import OverView from './components/Overview/Overview';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginForm from './components/LoginForm/LoginForm';
 import RegisterForm from './components/LoginForm/RegisterForm';
-import {RootStackParamList} from './Types';
-import {store} from './store';
-import {StoreProvider} from 'easy-peasy';
+import { RootStackParamList } from './Types';
+import { store } from './store';
+import { StoreProvider } from 'easy-peasy';
 
 const App = () => {
   console.log('App');
@@ -23,7 +23,7 @@ const App = () => {
           <Stack.Screen
             name="Overview"
             component={OverView}
-            options={{headerLeft: undefined}}
+            options={{ headerLeft: undefined }}
           />
         </Stack.Navigator>
       </StoreProvider>
