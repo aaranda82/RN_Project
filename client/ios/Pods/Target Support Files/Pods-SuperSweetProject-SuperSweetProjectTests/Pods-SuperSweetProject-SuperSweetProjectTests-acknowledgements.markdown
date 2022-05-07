@@ -670,8 +670,7 @@ SOFTWARE.
 
 ## OpenSSL-Universal
 
-LICENSE ISSUES
-==============
+# LICENSE ISSUES
 
 The OpenSSL toolkit stays under a dual license, i.e. both the conditions of
 the OpenSSL License and the original SSLeay license apply to the toolkit.

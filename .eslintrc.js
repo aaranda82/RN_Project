@@ -14,4 +14,13 @@ module.exports = {
     'no-shadow': 'off',
     '@typescript-eslint/no-shadow': ['error'],
   },
+  parserOptions: {
+    project: ['./tsconfig.json'],
+  },
+  ignorePatterns: [
+    '.eslintrc.js',
+    'babel.config.js',
+    'jest.config.js',
+    'metro.config.js',
+  ],
 };
