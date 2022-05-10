@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  backend:
+    container_name: super-sweet-backend
+    image: sweet-docker
+    ports:
+      - '3000:3000'
+    build:
+      context: .
+      target: development
+    command: yarn start:server
+    env_file: .env
+    volumes:
+      - ./:/app
+      - /app/node_modules
+    networks:
+      - backend
+  db:
+    container_name: super-sweet-db
+    image: postgres:12-alpine
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: test
+    volumes:
+      - database:/var/lib/postgresql/data
+    networks:
+      - backend
+
+volumes:
+  database:
+    name: supersweet-db
+
+networks:
+  backend:
+    name: super-sweet-backend-network
