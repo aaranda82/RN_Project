@@ -22,17 +22,16 @@ services:
     ports:
       - '5432:5432'
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: secret
-      POSTGRES_DB: test
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=secret
     volumes:
-      - database:/var/lib/postgresql/data
+      - ./db:/docker-entrypoint-initdb.d/
+      - pgdata:/var/lib/postgresql/data
     networks:
       - backend
 
 volumes:
-  database:
-    name: supersweet-db
+  pgdata:
 
 networks:
   backend:
