@@ -38,15 +38,24 @@ router.use('/', async (req, res) => {
         });
 
         if (user.length) {
-          const token = jwt.signJWT({
+          const userInfo = {
             user_id: user[0].id,
             email: user[0].email,
             userName: user[0].user_name,
+          };
+          const accessToken = jwt.signJWT({
+            ...userInfo,
             expiresIn: '2h',
           });
-          return res
-            .status(201)
-            .send({ token, status: 'Account created successfully' });
+          const refreshToken = jwt.signJWT({
+            ...userInfo,
+            expiresIn: '60d',
+          });
+          return res.status(201).send({
+            accessToken,
+            refreshToken,
+            status: 'Account created successfully',
+          });
         } else {
           return res.status(400).send({ error: 'Something went wrong' });
         }
