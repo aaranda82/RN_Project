@@ -1,0 +1,15 @@
+name: GitHub Actions Demo
+on: [push]
+env:
+  TOKEN_KEY: 'accessTokenKey'
+jobs:
+  Explore-GitHub-Actions:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - name: Install Modules
+        run: yarn
+      - run: cd server && yarn
+      - name: Run Tests
+        run: cd server && yarn test
