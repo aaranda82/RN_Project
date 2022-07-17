@@ -64,7 +64,8 @@
     "server/src/**/*",
     "client/index.ts",
     "server/app.ts",
-    "client/__tests__/**/*"
+    "client/__tests__/**/*",
+    "server/migrations/**/*"
   ],
   "exclude": [
     "node_modules",

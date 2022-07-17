@@ -22,5 +22,6 @@ module.exports = {
     'babel.config.js',
     'jest.config.js',
     'metro.config.js',
+    'server/knexfile.js',
   ],
 };
