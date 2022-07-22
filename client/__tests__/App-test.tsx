@@ -12,6 +12,7 @@ import renderer from 'react-test-renderer';
 jest.mock('react-native/Libraries/Animated/NativeAnimatedHelper');
 jest.useFakeTimers();
 
-it('renders correctly', () => {
-  renderer.create(<App />);
+it('renders app correctly', () => {
+  const tree = renderer.create(<App />).toJSON();
+  expect(tree).toMatchSnapshot();
 });

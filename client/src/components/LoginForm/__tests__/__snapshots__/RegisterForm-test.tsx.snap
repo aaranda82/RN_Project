@@ -1,0 +1,102 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders RegisterForm correctly 1`] = `
+<View
+  style={Object {}}
+>
+  <View>
+    <TextInput
+      onBlur={[Function]}
+      onChangeText={[Function]}
+      placeholder="USER NAME"
+      style={
+        Object {
+          "padding": 20,
+          "textAlign": "center",
+        }
+      }
+      value=""
+    />
+    <TextInput
+      onBlur={[Function]}
+      onChangeText={[Function]}
+      placeholder="EMAIL"
+      style={
+        Object {
+          "padding": 20,
+          "textAlign": "center",
+        }
+      }
+      value=""
+    />
+    <TextInput
+      onBlur={[Function]}
+      onChangeText={[Function]}
+      placeholder="PASSWORD"
+      secureTextEntry={true}
+      style={
+        Object {
+          "padding": 20,
+          "textAlign": "center",
+        }
+      }
+      value=""
+    />
+    <TextInput
+      onBlur={[Function]}
+      onChangeText={[Function]}
+      placeholder="PASSWORD"
+      secureTextEntry={true}
+      style={
+        Object {
+          "padding": 20,
+          "textAlign": "center",
+        }
+      }
+      value=""
+    />
+    <View
+      accessibilityRole="button"
+      accessible={true}
+      collapsable={false}
+      focusable={true}
+      nativeID="animatedComponent"
+      onClick={[Function]}
+      onResponderGrant={[Function]}
+      onResponderMove={[Function]}
+      onResponderRelease={[Function]}
+      onResponderTerminate={[Function]}
+      onResponderTerminationRequest={[Function]}
+      onStartShouldSetResponder={[Function]}
+      style={
+        Object {
+          "opacity": 1,
+        }
+      }
+    >
+      <View
+        style={
+          Array [
+            Object {},
+          ]
+        }
+      >
+        <Text
+          style={
+            Array [
+              Object {
+                "color": "#007AFF",
+                "fontSize": 18,
+                "margin": 8,
+                "textAlign": "center",
+              },
+            ]
+          }
+        >
+          Sign Up
+        </Text>
+      </View>
+    </View>
+  </View>
+</View>
+`;
