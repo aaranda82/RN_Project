@@ -2,7 +2,7 @@ import { knex } from '../config/knex';
 
 const lower = (text: string) => text.toLowerCase();
 
-export class UserServices {
+class UserService {
   async getUserByUserNameAndEmail({
     email,
     userName,
@@ -47,3 +47,5 @@ export class UserServices {
     return knex.select().from('users').where('user_name', lower(userName));
   }
 }
+
+export default UserService;

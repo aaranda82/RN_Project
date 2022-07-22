@@ -10,6 +10,11 @@ jobs:
         uses: actions/checkout@v3
       - name: Install Modules
         run: yarn
-      - run: cd server && yarn
-      - name: Run Tests
+      - name: Install Server Modules
+        run: cd server && yarn
+      - name: Install Client Modules
+        run: cd client && yarn
+      - name: Run Server Tests
         run: cd server && yarn test
+      - name: Run Client Tests
+        run: cd client && yarn test

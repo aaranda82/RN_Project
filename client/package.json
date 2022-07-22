@@ -56,6 +56,12 @@
       "jsx",
       "json",
       "node"
+    ],
+    "setupFiles": [
+      "./src/jestSetup.js"
+    ],
+    "transformIgnorePatterns": [
+      "node_modules/(?!((jest-)?react-native|@react-native|react-navigation|@react-navigation/.*))"
     ]
   }
 }
