@@ -11,7 +11,6 @@ import { store } from './store';
 import { StoreProvider } from 'easy-peasy';
 
 const App = () => {
-  console.log('App');
   const Stack = createNativeStackNavigator<RootStackParamList>();
   return (
     <NavigationContainer>
