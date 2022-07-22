@@ -1,10 +1,10 @@
 import { Router } from 'express';
 import JwtService from '../../services/jwt';
-import { UserServices } from '../../services/queries';
+import UserService from '../../services/queries';
 require('dotenv').config();
 
 const jwt = new JwtService();
-const userService = new UserServices();
+const userService = new UserService();
 const router = Router();
 
 router.use('/', async (req, res) => {

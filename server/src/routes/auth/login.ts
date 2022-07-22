@@ -1,10 +1,10 @@
 import { compare } from 'bcrypt';
 import { Router } from 'express';
 import JwtService from '../../services/jwt';
-import { UserServices } from '../../services/queries';
+import UserService from '../../services/queries';
 require('dotenv').config();
 
-const user = new UserServices();
+const userService = new UserService();
 const jwt = new JwtService();
 const router = Router();
 
@@ -14,7 +14,7 @@ router.use('/', async (req, res) => {
     if (!userName || !password) {
       return res.status(400).send({ error: 'Missing Input' });
     }
-    const fetchedPW = await user.fetchUserByUserName(userName);
+    const fetchedPW = await userService.fetchUserByUserName(userName);
     if (!fetchedPW.length) {
       return res.status(400).send({ error: 'User name not in DB' });
     } else {

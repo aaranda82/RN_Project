@@ -13,8 +13,8 @@ jobs:
       - name: Install Server Modules
         run: cd server && yarn
       - name: Install Client Modules
-        run: cd ../client && yarn
+        run: cd client && yarn
       - name: Run Server Tests
         run: cd server && yarn test
       - name: Run Client Tests
-        run: cd ../client && yarn test
+        run: cd client && yarn test
