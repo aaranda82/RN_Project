@@ -6,7 +6,7 @@ export interface StoreModel {
   clearUserId: Action<StoreModel>;
 }
 
-export const store = createStore<StoreModel>({
+export const storeModel = createStore<StoreModel>({
   userId: '',
   setUserId: action((state, payload) => {
     state.userId = payload;
