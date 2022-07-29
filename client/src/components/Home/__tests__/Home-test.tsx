@@ -3,12 +3,12 @@ import Home from '../Home';
 
 import renderer from 'react-test-renderer';
 
-const navProps: any = {};
-const routeProps: any = {};
+const props: any = {
+  navigation: { navigate: () => jest.fn() },
+  route: undefined,
+};
 
 it('renders Home screen correctly', () => {
-  const tree = renderer
-    .create(<Home navigation={navProps} route={routeProps} />)
-    .toJSON();
+  const tree = renderer.create(<Home {...props} />).toJSON();
   expect(tree).toMatchSnapshot();
 });
