@@ -5,15 +5,17 @@ import renderer from 'react-test-renderer';
 import { createStore, StoreProvider } from 'easy-peasy';
 import { storeModel } from '../../../store';
 
-const navProps: any = {};
-const routeProps: any = {};
+const props: any = {
+  navigation: { navigate: () => jest.fn() },
+  route: undefined,
+};
 
 it('renders LoginForm correctly', () => {
   const store = createStore(storeModel);
   const tree = renderer
     .create(
       <StoreProvider store={store}>
-        <LoginForm navigation={navProps} route={routeProps} />
+        <LoginForm {...props} />
       </StoreProvider>,
     )
     .toJSON();

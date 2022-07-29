@@ -5,15 +5,17 @@ import renderer from 'react-test-renderer';
 import { createStore, StoreProvider } from 'easy-peasy';
 import { storeModel } from '../../../store';
 
-const navProps: any = {};
-const routeProps: any = {};
+const props: any = {
+  navigation: { navigate: () => jest.fn() },
+  route: undefined,
+};
 
 it('renders RegisterForm correctly', () => {
   const store = createStore(storeModel);
   const tree = renderer
     .create(
       <StoreProvider store={store}>
-        <RegisterForm navigation={navProps} route={routeProps} />
+        <RegisterForm {...props} />
       </StoreProvider>,
     )
 
