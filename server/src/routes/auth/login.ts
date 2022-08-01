@@ -27,7 +27,7 @@ router.use('/', async (req, res) => {
         const userInfo = {
           user_id: fetchedPW[0].id,
           email: fetchedPW[0].email,
-          userName: fetchedPW[0].userName,
+          userName: fetchedPW[0].user_name,
         };
         const accessToken = jwt.signJWT({
           ...userInfo,

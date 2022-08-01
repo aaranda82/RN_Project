@@ -1,6 +1,6 @@
 import { Formik } from 'formik';
-import React from 'react';
-import { Button, StyleSheet, TextInput, View } from 'react-native';
+import React, { useState } from 'react';
+import { Button, StyleSheet, Text, TextInput, View } from 'react-native';
 import Error from './Error';
 import * as Yup from 'yup';
 import axios from 'axios';
@@ -42,16 +42,22 @@ interface SignUpFormValues extends BasicFormValues {
 
 const RegisterForm: React.FC<RegisterFormProps> = ({ navigation }) => {
   const setUserId = useStoreActions((s) => s.setUserId);
+  const [error, setError] = useState('');
   const handleOnSubmit = async (values: SignUpFormValues) => {
+    setError('');
     const res = await axios.post(`${baseUrl}/auth/register`, {
       userName: values.userName,
       email: values.email,
       password: values.password,
       confirmPassword: values.confirmPassword,
     });
-    await storeTokens(res.data.accessToken, res.data.refreshToken);
-    setUserId(res.data.userId);
-    navigation.navigate('Overview');
+    console.log({ res: res.data });
+    if (res.data.accessToken && res.data.refreshToken) {
+      await storeTokens(res.data.accessToken, res.data.refreshToken);
+      setUserId(res.data.userId);
+      navigation.navigate('Overview');
+    }
+    if (res.data.error) setError(res.data.error);
   };
 
   return (
@@ -118,6 +124,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ navigation }) => {
             {touched.confirmPassword && errors.confirmPassword ? (
               <Error text={errors.confirmPassword} />
             ) : null}
+            {error ? <Text style={styles.error}>{error}</Text> : null}
             <Button onPress={handleSubmit} title="Sign Up" />
           </View>
         )}
@@ -129,6 +136,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ navigation }) => {
 const styles = StyleSheet.create({
   login: {},
   input: { textAlign: 'center', padding: 20 },
+  error: { color: 'red', textAlign: 'center' },
 });
 
 export default RegisterForm;

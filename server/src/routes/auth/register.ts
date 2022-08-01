@@ -25,7 +25,7 @@ router.use('/', async (req, res) => {
     if (existingUser[0]?.user_name === userName.toLowerCase()) {
       return res.send({ error: 'User name taken' });
     } else if (existingUser[0]?.email === email.toLowerCase()) {
-      return res.send({ error: 'Eror creating account' });
+      return res.send({ error: 'Error creating account' });
     } else {
       hash(password, 10, async (error, hashedPassword) => {
         if (error) {
@@ -37,11 +37,11 @@ router.use('/', async (req, res) => {
           password: hashedPassword,
         });
 
-        if (user.length) {
+        if (user.id) {
           const userInfo = {
-            user_id: user[0].id,
-            email: user[0].email,
-            userName: user[0].user_name,
+            user_id: user.id,
+            email: user.email,
+            userName: user.user_name,
           };
           const accessToken = jwt.signJWT({
             ...userInfo,

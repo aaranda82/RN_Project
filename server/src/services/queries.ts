@@ -1,4 +1,4 @@
-import { knex } from '../config/knex';
+import { Users } from '../models/User';
 
 const lower = (text: string) => text.toLowerCase();
 
@@ -10,18 +10,18 @@ class UserService {
     email: string;
     userName: string;
   }) {
-    return knex
+    const user = await Users.query()
       .select('email', 'user_name')
-      .from('users')
       .where('email', lower(email))
       .orWhere('user_name', lower(userName));
+    return user;
   }
 
   async getUserById(userId: string) {
-    return knex
+    const user = await Users.query()
       .select('user_name', 'email', 'id')
-      .from('users')
       .where('id', userId);
+    return user;
   }
 
   async insertUser({
@@ -33,18 +33,17 @@ class UserService {
     email: string;
     password: string;
   }) {
-    return knex('users').insert(
-      {
-        user_name: lower(userName),
-        email: lower(email),
-        password: password,
-      },
-      ['id', 'email', 'user_name'],
-    );
+    const user = await Users.query().insert({
+      user_name: lower(userName),
+      email: lower(email),
+      password: password,
+    });
+    return user;
   }
 
   async fetchUserByUserName(userName: string) {
-    return knex.select().from('users').where('user_name', lower(userName));
+    const user = await Users.query().where('user_name', lower(userName));
+    return user;
   }
 }
 

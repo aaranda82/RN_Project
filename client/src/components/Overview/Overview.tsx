@@ -2,7 +2,11 @@ import axios from 'axios';
 import React, { useState } from 'react';
 import { Button, StyleSheet, Text, View } from 'react-native';
 import { baseUrl, TOKEN } from '../../constants';
-import { getToken, storeToken } from '../../services/asyncStorage';
+import {
+  getToken,
+  removeTokens,
+  storeToken,
+} from '../../services/asyncStorage';
 import { useStoreActions } from '../../store';
 import { OverviewProps } from '../../Types';
 
@@ -11,6 +15,7 @@ const OverView: React.FC<OverviewProps> = ({ navigation }) => {
   const [displayText, setDisplayText] = useState('');
   const handleTestCall = async () => {
     const accessToken = await getToken(TOKEN.access);
+    console.log({ accessToken });
     const {
       data: { text, error },
     } = await axios.get(`${baseUrl}/`, {
@@ -39,6 +44,7 @@ const OverView: React.FC<OverviewProps> = ({ navigation }) => {
 
   const logout = () => {
     setUserId('');
+    removeTokens();
     navigation.navigate('Home');
   };
 
