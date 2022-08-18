@@ -1,7 +1,11 @@
 import express, { json } from 'express';
 import verifyToken from './src/middleware/auth';
 import auth from './src/routes/auth/index';
+import { knex } from './src/config/knex';
+import { Model } from 'objection';
 require('dotenv').config();
+
+Model.knex(knex);
 
 const app = express();
 const port = 3000;
