@@ -6,7 +6,7 @@ import * as Yup from 'yup';
 import axios from 'axios';
 import { baseUrl } from '../../constants';
 import { storeTokens } from '../../services/asyncStorage';
-import { useStoreActions } from '../../store';
+import { useStoreActions } from '../../store/hooks';
 import { RegisterFormProps } from '../../Types';
 
 const SignUpSchema = Yup.object().shape({
@@ -41,7 +41,7 @@ interface SignUpFormValues extends BasicFormValues {
 }
 
 const RegisterForm: React.FC<RegisterFormProps> = ({ navigation }) => {
-  const setUserId = useStoreActions((s) => s.setUserId);
+  const setUser = useStoreActions((s) => s.user.setUser);
   const [error, setError] = useState('');
   const handleOnSubmit = async (values: SignUpFormValues) => {
     setError('');

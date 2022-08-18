@@ -3,7 +3,7 @@ import RegisterForm from '../RegisterForm';
 
 import renderer from 'react-test-renderer';
 import { createStore, StoreProvider } from 'easy-peasy';
-import { storeModel } from '../../../store';
+import { storeModel } from '../../../store/models';
 
 const props: any = {
   navigation: { navigate: () => jest.fn() },

@@ -5,7 +5,7 @@ import { Button, StyleSheet, TextInput, View } from 'react-native';
 import * as Yup from 'yup';
 import { baseUrl } from '../../constants';
 import { storeTokens } from '../../services/asyncStorage';
-import { useStoreActions } from '../../store';
+import { useStoreActions } from '../../store/hooks';
 import { LoginFormProps } from '../../Types';
 import Error from './Error';
 import { BasicFormValues } from './RegisterForm';
@@ -20,7 +20,7 @@ const LoginSchema = Yup.object().shape({
 });
 
 const LoginForm: React.FC<LoginFormProps> = ({ navigation }) => {
-  const setUserId = useStoreActions((s) => s.setUserId);
+  const setUserId = useStoreActions((s) => s.user.setUser);
   const handleOnSubmit = async (values: BasicFormValues) => {
     const {
       data: { accessToken, refreshToken, userId, error },
