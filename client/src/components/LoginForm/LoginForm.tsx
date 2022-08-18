@@ -1,11 +1,11 @@
 import axios from 'axios';
 import { Formik } from 'formik';
-import React from 'react';
+import React, { useState } from 'react';
 import { Button, StyleSheet, TextInput, View } from 'react-native';
 import * as Yup from 'yup';
 import { baseUrl } from '../../constants';
 import { storeTokens } from '../../services/asyncStorage';
-import { useStoreActions } from '../../store';
+import { useStoreActions } from '../../store/hooks';
 import { LoginFormProps } from '../../Types';
 import Error from './Error';
 import { BasicFormValues } from './RegisterForm';
@@ -20,20 +20,23 @@ const LoginSchema = Yup.object().shape({
 });
 
 const LoginForm: React.FC<LoginFormProps> = ({ navigation }) => {
-  const setUserId = useStoreActions((s) => s.setUserId);
+  const setUserId = useStoreActions((s) => s.user.setUser);
+  const [errorText, setErrorText] = useState('');
+
   const handleOnSubmit = async (values: BasicFormValues) => {
+    errorText && setErrorText('');
     const {
-      data: { accessToken, refreshToken, userId, error },
+      data: { accessToken, refreshToken, userId, error, userName },
     } = await axios.post(`${baseUrl}/auth/login`, {
       userName: values.userName,
       password: values.password,
     });
-    if (error) {
-      console.log(error);
-    }
+
+    if (error) setErrorText(error);
+
     if (accessToken && refreshToken && userId) {
       await storeTokens(accessToken, refreshToken);
-      setUserId(userId);
+      setUserId({ userId: userId, userName: userName });
       navigation.navigate('Overview');
     }
   };
@@ -75,6 +78,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ navigation }) => {
             {touched.password && errors.password ? (
               <Error text={errors.password} />
             ) : null}
+            {errorText ? <Error text={errorText} /> : null}
 
             <Button onPress={handleSubmit} title="Log In" />
           </View>

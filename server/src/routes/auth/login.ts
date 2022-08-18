@@ -12,11 +12,11 @@ router.use('/', async (req, res) => {
   try {
     const { userName, password } = req.body;
     if (!userName || !password) {
-      return res.status(400).send({ error: 'Missing Input' });
+      return res.send({ error: 'Missing Input' });
     }
     const fetchedPW = await userService.fetchUserByUserName(userName);
     if (!fetchedPW.length) {
-      return res.status(400).send({ error: 'User name not in DB' });
+      return res.send({ error: 'User name not in DB' });
     } else {
       compare(password, fetchedPW[0].password, function (err, result) {
         if (err) {
@@ -37,12 +37,12 @@ router.use('/', async (req, res) => {
           ...userInfo,
           expiresIn: '60d',
         });
-
         return res.send({
           accessToken,
           refreshToken,
           authenticated: result,
           userId: fetchedPW[0].id,
+          userName: fetchedPW[0].user_name,
         });
       });
     }

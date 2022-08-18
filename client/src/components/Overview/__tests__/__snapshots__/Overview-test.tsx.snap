@@ -20,6 +20,18 @@ exports[`renders RegisterForm correctly 1`] = `
       }
     }
   >
+    Hi !
+  </Text>
+  <Text
+    style={
+      Object {
+        "fontSize": 40,
+        "marginBottom": 40,
+        "marginTop": 40,
+        "textAlign": "center",
+      }
+    }
+  >
     You have logged in
   </Text>
   <Text

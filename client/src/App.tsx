@@ -7,14 +7,14 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginForm from './components/LoginForm/LoginForm';
 import RegisterForm from './components/LoginForm/RegisterForm';
 import { RootStackParamList } from './Types';
-import { storeModel } from './store';
 import { StoreProvider } from 'easy-peasy';
+import { store } from './store';
 
 const App = () => {
   const Stack = createNativeStackNavigator<RootStackParamList>();
   return (
     <NavigationContainer>
-      <StoreProvider store={storeModel}>
+      <StoreProvider store={store}>
         <Stack.Navigator initialRouteName="Home">
           <Stack.Screen name="Home" component={Home} />
           <Stack.Screen name="Login" component={LoginForm} />

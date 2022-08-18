@@ -7,15 +7,17 @@ import {
   removeTokens,
   storeToken,
 } from '../../services/asyncStorage';
-import { useStoreActions } from '../../store';
+import { useStoreActions, useStoreState } from '../../store/hooks';
 import { OverviewProps } from '../../Types';
 
 const OverView: React.FC<OverviewProps> = ({ navigation }) => {
-  const setUserId = useStoreActions((s) => s.setUserId);
+  const clearUser = useStoreActions((s) => s.user.clearUser);
+  const userName = useStoreState((s) => s.user.userName);
   const [displayText, setDisplayText] = useState('');
+
   const handleTestCall = async () => {
     const accessToken = await getToken(TOKEN.access);
-    console.log({ accessToken });
+
     const {
       data: { text, error },
     } = await axios.get(`${baseUrl}/`, {
@@ -31,7 +33,7 @@ const OverView: React.FC<OverviewProps> = ({ navigation }) => {
           headers: { 'x-access-token': refreshToken || '' },
         });
         if (res.data.error) {
-          setUserId('');
+          clearUser();
         } else {
           storeToken(res.data.token);
         }
@@ -43,13 +45,14 @@ const OverView: React.FC<OverviewProps> = ({ navigation }) => {
   };
 
   const logout = () => {
-    setUserId('');
+    clearUser();
     removeTokens();
     navigation.navigate('Home');
   };
 
   return (
     <View style={styles.container}>
+      <Text style={styles.text}>{`Hi ${userName}!`}</Text>
       <Text style={styles.text}>You have logged in</Text>
       <Text style={styles.text}>{displayText}</Text>
       <Button onPress={handleTestCall} title="Am I logged in?" />

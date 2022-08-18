@@ -12,9 +12,7 @@ router.use('/', async (req, res) => {
   try {
     const { email, userName, password } = req.body;
     if (!email || !userName || !password) {
-      return res
-        .status(400)
-        .send({ email, userName, password, status: 'Missing input' });
+      return res.send({ email, userName, password, status: 'Missing input' });
     }
 
     const existingUser = await userService.getUserByUserNameAndEmail({
@@ -55,9 +53,11 @@ router.use('/', async (req, res) => {
             accessToken,
             refreshToken,
             status: 'Account created successfully',
+            userName: user.user_name,
+            userId: user.id,
           });
         } else {
-          return res.status(400).send({ error: 'Something went wrong' });
+          return res.send({ error: 'Something went wrong' });
         }
       });
     }

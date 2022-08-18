@@ -1,5 +1,4 @@
 require('dotenv').config();
-import { Model } from 'objection';
 
 export const knex = require('knex')({
   client: 'pg',
@@ -11,5 +10,3 @@ export const knex = require('knex')({
     host: process.env.DB_HOST,
   },
 });
-
-Model.knex(knex);
