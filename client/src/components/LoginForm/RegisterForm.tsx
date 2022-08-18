@@ -43,6 +43,7 @@ interface SignUpFormValues extends BasicFormValues {
 const RegisterForm: React.FC<RegisterFormProps> = ({ navigation }) => {
   const setUser = useStoreActions((s) => s.user.setUser);
   const [error, setError] = useState('');
+
   const handleOnSubmit = async (values: SignUpFormValues) => {
     setError('');
     const res = await axios.post(`${baseUrl}/auth/register`, {
@@ -51,10 +52,10 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ navigation }) => {
       password: values.password,
       confirmPassword: values.confirmPassword,
     });
-    console.log({ res: res.data });
+
     if (res.data.accessToken && res.data.refreshToken) {
       await storeTokens(res.data.accessToken, res.data.refreshToken);
-      setUserId(res.data.userId);
+      setUser({ userId: res.data.userId, userName: res.data.userName });
       navigation.navigate('Overview');
     }
     if (res.data.error) setError(res.data.error);
